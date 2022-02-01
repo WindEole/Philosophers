@@ -6,7 +6,7 @@
 /*   By: iderighe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 14:39:31 by iderighe          #+#    #+#             */
-/*   Updated: 2022/01/25 18:09:35 by iderighe         ###   ########.fr       */
+/*   Updated: 2022/02/01 19:42:14 by iderighe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,34 +30,63 @@
 # define GREY "\033[1;37m"
 # define RESET "\033[0m"
 
+# define ODD 1
+# define EVEN 2
+# define SIG_END 7
+# define EAT_OK 8
+# define PRINT_OK 42
+# define PRINT_KO 21
+
 typedef struct s_phi
 {
-	int		np;
-	int		nf;
-	struct s_dat	*dat;
-	struct s_phi	*next;
+	int					n;
+	pthread_t			phi_th;
+	int					eat_n;
+	int					eat_ok;
+	pthread_mutex_t		phi_m;
+	pthread_mutex_t		fork_m;
+	pthread_mutex_t		godie_m;
+	unsigned long long	last_eat;
+	unsigned long long	tm_zero;
+	struct s_dat		*dat;
+	struct s_phi		*next;
 }	t_phi;
 
 typedef struct s_dat
 {
-	int		npf; // nb de philosophes et de fourchettes
-	int		die; // (ms) time between last meal and death
-	int		eat; // (ms) time it takes for a philosopher to eat
-	int		sle; // (ms) time the philosophers sleeps
-	int		t; // OPTIONAL nb de fois ou 1 philo doit manger)
+	int				nbr; // nb de philosophes et de fourchettes
+	int				tm_die; // (ms) time between last meal and death
+	pthread_t		die_th;
+	int				tm_eat;// (ms) time it takes for a philosopher to eat
+	pthread_t		eat_th;
+	int				tm_sle; // (ms) time the philosophers sleeps
+	int				round; // OPTIONAL nb de fois ou 1 philo doit manger)
+	int				sig;
+	int				sig_print;
+	int				sig_eat;
+	pthread_mutex_t	eat_m;
+	pthread_mutex_t	print_m;
+	pthread_mutex_t	data_m;
 	struct s_phi	*head;
 	struct s_phi	*tail;
-
 }	t_dat;
 
+void				ft_print(t_phi *phi, char *s);
 
-/*typedef struct s_phi
-{
-	int		np;
-	int		nf;
-	t_dat	*dat;
-	t_phi	*next;
-}	t_phi;*/
+int					ft_free_all(t_dat *dat, char *s);
+void				ft_end_thread(t_dat *dat);
+unsigned long long	gettime_zero(void);
+unsigned long long	gettime(unsigned long long tm_zero);
+long				ft_atoi(const char *s);
 
+int					ft_add_elem(t_dat *dat, int i);
+int					ft_init_phi(t_dat *dat);
+int					ft_check_arg(int ac, char **av, t_dat *dat);
+
+int					ft_read_int(pthread_mutex_t *mut, int *val);
+unsigned long long	ft_read_llu(pthread_mutex_t *mut, unsigned long long *val);
+void				ft_write_int(pthread_mutex_t *mut, int *val, int i);
+void				ft_write_llu(pthread_mutex_t *mut, unsigned long long *val,
+						unsigned long long i);
 
 #endif
