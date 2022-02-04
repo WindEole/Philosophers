@@ -6,7 +6,7 @@
 /*   By: iderighe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 14:39:31 by iderighe          #+#    #+#             */
-/*   Updated: 2022/02/01 19:42:14 by iderighe         ###   ########.fr       */
+/*   Updated: 2022/02/04 12:54:01 by iderighe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_phi
 	int					eat_ok;
 	pthread_mutex_t		phi_m;
 	pthread_mutex_t		fork_m;
+	pthread_mutex_t		busy_m;
 	pthread_mutex_t		godie_m;
 	unsigned long long	last_eat;
 	unsigned long long	tm_zero;
@@ -54,13 +55,13 @@ typedef struct s_phi
 
 typedef struct s_dat
 {
-	int				nbr; // nb de philosophes et de fourchettes
-	int				tm_die; // (ms) time between last meal and death
+	int				nbr;
+	int				tm_die;
 	pthread_t		die_th;
-	int				tm_eat;// (ms) time it takes for a philosopher to eat
+	int				tm_eat;
 	pthread_t		eat_th;
-	int				tm_sle; // (ms) time the philosophers sleeps
-	int				round; // OPTIONAL nb de fois ou 1 philo doit manger)
+	int				tm_sle;
+	int				round;
 	int				sig;
 	int				sig_print;
 	int				sig_eat;
@@ -71,22 +72,35 @@ typedef struct s_dat
 	struct s_phi	*tail;
 }	t_dat;
 
-void				ft_print(t_phi *phi, char *s);
-
-int					ft_free_all(t_dat *dat, char *s);
-void				ft_end_thread(t_dat *dat);
-unsigned long long	gettime_zero(void);
-unsigned long long	gettime(unsigned long long tm_zero);
-long				ft_atoi(const char *s);
+/////     init.c     /////
 
 int					ft_add_elem(t_dat *dat, int i);
 int					ft_init_phi(t_dat *dat);
 int					ft_check_arg(int ac, char **av, t_dat *dat);
+
+/////     philo_thread.c     /////
+
+void				*routine_phi(void *arg);
+
+/////     time.c     /////
+
+void				go_die(t_phi *phi, t_dat *dat);
+void				*routine_bigb(void *arg);
+void				prec_sleep(unsigned long long delay, t_phi *phi);
+unsigned long long	gettime(unsigned long long tm_zero);
+
+/////    print.c     /////
 
 int					ft_read_int(pthread_mutex_t *mut, int *val);
 unsigned long long	ft_read_llu(pthread_mutex_t *mut, unsigned long long *val);
 void				ft_write_int(pthread_mutex_t *mut, int *val, int i);
 void				ft_write_llu(pthread_mutex_t *mut, unsigned long long *val,
 						unsigned long long i);
+void				ft_print(t_phi *phi, char *s);
+
+/////     end.c     /////
+
+int					ft_free_all(t_dat *dat, char *s);
+int					ft_end_thread(t_dat *dat, char *s);
 
 #endif

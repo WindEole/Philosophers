@@ -6,7 +6,7 @@
 #    By: iderighe <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/27 10:55:19 by iderighe          #+#    #+#              #
-#    Updated: 2022/02/01 22:21:21 by iderighe         ###   ########.fr        #
+#    Updated: 2022/02/03 15:17:10 by iderighe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,9 +20,11 @@ CFS		=	-fsanitize=address -g3
 RM		=	/usr/bin/rm -rf
 
 SRC		=	main_philo.c \
+			philo_thread.c \
 			init.c \
+			time.c \
 			print.c \
-			utils.c \
+			end.c \
 
 OBJ		=	$(SRC:.c=.o)
 
@@ -33,7 +35,7 @@ $(NAME)	:	$(OBJ)
 			$(CC) $(CFLAGS) -o $(NAME) $(SRC)
 
 %.o		:	%.c
-			$(CC) -o $@ -c $< $(CFLAGS) $(FTHR)
+			$(CC) -o $@ -c $< $(CFLAGS)
 
 norm	:
 			norminette $(SRC)
@@ -48,12 +50,11 @@ fclean	:	clean
 fsa		:	$(OBJ)
 			$(CC) $(CFLAGS) $(CFS) -o $(NAME) $(SRC)
 
-thr		:	$(OBJ)
+fst		:	$(OBJ)
 			$(CC) $(CFLAGS) $(CTHR) -o $(NAME) $(SRC)
 
 fre		:	fclean f
 
 re		:	fclean all
 
-.PHONY	:	all norm clean fclean fsa thr fre re
-
+.PHONY	:	all norm clean fclean fsa fst fre re
