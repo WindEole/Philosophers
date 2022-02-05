@@ -6,7 +6,7 @@
 #    By: iderighe <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/27 10:55:19 by iderighe          #+#    #+#              #
-#    Updated: 2022/02/03 15:17:10 by iderighe         ###   ########.fr        #
+#    Updated: 2022/02/04 13:57:55 by iderighe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,8 @@ NAME	=	philo
 
 CC		=	clang
 CFLAGS	=	-Wall -Wextra -Werror -pthread
-CTHR	=	-fsanitize=thread -g3
-CFS		=	-fsanitize=address -g3
+CFA		=	-fsanitize=address -g3
+CFT		=	-fsanitize=thread -g3
 
 RM		=	/usr/bin/rm -rf
 
@@ -48,13 +48,11 @@ fclean	:	clean
 			$(RM) $(NAME)
 
 fsa		:	$(OBJ)
-			$(CC) $(CFLAGS) $(CFS) -o $(NAME) $(SRC)
+			$(CC) $(CFLAGS) $(CFA) -o $(NAME) $(SRC)
 
 fst		:	$(OBJ)
-			$(CC) $(CFLAGS) $(CTHR) -o $(NAME) $(SRC)
-
-fre		:	fclean f
+			$(CC) $(CFLAGS) $(CFT) -o $(NAME) $(SRC)
 
 re		:	fclean all
 
-.PHONY	:	all norm clean fclean fsa fst fre re
+.PHONY	:	all norm clean fclean fsa fst re

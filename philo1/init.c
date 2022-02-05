@@ -6,7 +6,7 @@
 /*   By: iderighe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 11:59:17 by iderighe          #+#    #+#             */
-/*   Updated: 2022/02/02 14:33:49 by iderighe         ###   ########.fr       */
+/*   Updated: 2022/02/05 10:56:59 by iderighe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	ft_init_phi(t_dat *dat)
 		pthread_mutex_init(&dat->tail->fork_m, NULL);
 		pthread_mutex_init(&dat->tail->phi_m, NULL);
 		pthread_mutex_init(&dat->tail->godie_m, NULL);
+		pthread_mutex_init(&dat->tail->busy_m, NULL);
 		dat->tail->last_eat = 0;
 		dat->tail->eat_n = 0;
 		dat->tail->eat_ok = 0;
@@ -61,28 +62,20 @@ int	ft_init_phi(t_dat *dat)
 long	ft_atoi(const char *s)
 {
 	int		i;
-	int		minus;
 	long	res;
 
 	i = 0;
-	minus = 1;
 	res = 0;
-	while (s[i] == 32 || (s[i] > 8 && s[i] < 14))
+	if (s[i] == '+')
 		i++;
-	if (s[i] == '-' || s[i] == '+')
-	{
-		if (s[i] == '-')
-			return (-1);
-		i++;
-	}
 	while (s[i] && (unsigned char)s[i] >= 48 && (unsigned char)s[i] <= 57)
 	{
 		res = (res * 10) + ((unsigned char)s[i] - 48);
 		i++;
 	}
-	if (res > INT_MAX || i > 11)
+	if (i == 0 || s[i] != '\0' || res > INT_MAX || i > 11)
 		return (-1);
-	return (res);
+	return ((int)res);
 }
 
 int	ft_check_arg(int ac, char **av, t_dat *dat)

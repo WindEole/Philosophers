@@ -6,20 +6,20 @@
 /*   By: iderighe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 14:39:31 by iderighe          #+#    #+#             */
-/*   Updated: 2022/02/04 12:54:01 by iderighe         ###   ########.fr       */
+/*   Updated: 2022/02/05 15:05:45 by iderighe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# include <string.h> // memset
-# include <unistd.h> // usleep
-# include <sys/time.h> // gettimeofday
-# include <stdlib.h> // malloc / free
-# include <limits.h> // INT_MIN / INT_MAX
-# include <stdio.h> // printf
-# include <pthread.h> // thread functions !
+# include <string.h>
+# include <unistd.h>
+# include <sys/time.h>
+# include <stdlib.h>
+# include <limits.h>
+# include <stdio.h>
+# include <pthread.h>
 
 # define RED "\033[1;31m"
 # define GREEN "\033[1;32m"

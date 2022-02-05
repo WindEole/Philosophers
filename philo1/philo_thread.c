@@ -6,7 +6,7 @@
 /*   By: iderighe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 15:03:36 by iderighe          #+#    #+#             */
-/*   Updated: 2022/02/04 11:43:00 by iderighe         ###   ########.fr       */
+/*   Updated: 2022/02/05 08:13:15 by iderighe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ void	ft_eat(t_phi *phi, t_dat *dat)
 		ft_read_int(&dat->eat_m, &dat->sig_eat) + 1);
 	prec_sleep(ft_read_int(&dat->data_m, &dat->tm_eat), phi);
 	pthread_mutex_unlock(&phi->busy_m);
-	pthread_mutex_unlock(&phi->next->fork_m);
 	pthread_mutex_unlock(&phi->fork_m);
+	pthread_mutex_unlock(&phi->next->fork_m);
 }
 
 void	*routine_phi(void *arg)
