@@ -6,7 +6,7 @@
 /*   By: iderighe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 14:39:31 by iderighe          #+#    #+#             */
-/*   Updated: 2022/02/05 15:05:45 by iderighe         ###   ########.fr       */
+/*   Updated: 2022/02/07 15:02:59 by iderighe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,68 +39,65 @@
 
 typedef struct s_phi
 {
-	int					n;
-	pthread_t			phi_th;
-	int					eat_n;
-	int					eat_ok;
-	pthread_mutex_t		phi_m;
-	pthread_mutex_t		fork_m;
-	pthread_mutex_t		busy_m;
-	pthread_mutex_t		godie_m;
-	unsigned long long	last_eat;
-	unsigned long long	tm_zero;
-	struct s_dat		*dat;
-	struct s_phi		*next;
+	pthread_t		phi_th;
+	pthread_mutex_t	phi_m;
+	pthread_mutex_t	fork_m;
+	unsigned long	n;
+	unsigned long	count_eat;
+	unsigned long	full_eat;
+	unsigned long	last_eat;
+	struct s_dat	*dat;
+	struct s_phi	*next;
 }	t_phi;
 
 typedef struct s_dat
 {
-	int				nbr;
-	int				tm_die;
-	pthread_t		die_th;
-	int				tm_eat;
-	pthread_t		eat_th;
-	int				tm_sle;
-	int				round;
-	int				sig;
-	int				sig_print;
-	int				sig_eat;
-	pthread_mutex_t	eat_m;
-	pthread_mutex_t	print_m;
+	pthread_t		big_th;
+	pthread_t		man_th;
+	unsigned long	nbr;
+	unsigned long	tm_die;
+	unsigned long	tm_eat;
+	unsigned long	tm_sle;
+	unsigned long	round;
+	unsigned long	tm_zero;
+	unsigned long	sig;
+	unsigned long	print;
+	unsigned long	half_eat;
 	pthread_mutex_t	data_m;
+	pthread_mutex_t	print_m;
+	pthread_mutex_t	start_m;
 	struct s_phi	*head;
 	struct s_phi	*tail;
 }	t_dat;
 
 /////     init.c     /////
 
-int					ft_add_elem(t_dat *dat, int i);
-int					ft_init_phi(t_dat *dat);
-int					ft_check_arg(int ac, char **av, t_dat *dat);
+int				ft_add_elem(t_dat *dat, int i);
+int				ft_init_phi(t_dat *dat);
+int				ft_check_arg(int ac, char **av, t_dat *dat);
 
 /////     philo_thread.c     /////
 
-void				*routine_phi(void *arg);
+void			*routine_phi(void *arg);
 
 /////     time.c     /////
 
-void				go_die(t_phi *phi, t_dat *dat);
-void				*routine_bigb(void *arg);
-void				prec_sleep(unsigned long long delay, t_phi *phi);
-unsigned long long	gettime(unsigned long long tm_zero);
+void			go_die(t_phi *phi, t_dat *dat);
+void			*routine_big(void *arg);
+void			*routine_man(void *arg);
+void			prec_wait(unsigned long delay, t_dat *dat);
+unsigned long	gettime(unsigned long tm_zero);
 
 /////    print.c     /////
 
-int					ft_read_int(pthread_mutex_t *mut, int *val);
-unsigned long long	ft_read_llu(pthread_mutex_t *mut, unsigned long long *val);
-void				ft_write_int(pthread_mutex_t *mut, int *val, int i);
-void				ft_write_llu(pthread_mutex_t *mut, unsigned long long *val,
-						unsigned long long i);
-void				ft_print(t_phi *phi, char *s);
+unsigned long	read_val(pthread_mutex_t *mut, unsigned long *val);
+void			write_val(pthread_mutex_t *mut, unsigned long *val,
+					unsigned long i);
+void			ft_print(t_phi *phi, char *s);
 
 /////     end.c     /////
 
-int					ft_free_all(t_dat *dat, char *s);
-int					ft_end_thread(t_dat *dat, char *s);
+int				ft_free_all(t_dat *dat, char *s);
+int				ft_end_thread(t_dat *dat, char *s);
 
 #endif

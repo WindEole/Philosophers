@@ -6,7 +6,7 @@
 /*   By: iderighe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 14:09:01 by iderighe          #+#    #+#             */
-/*   Updated: 2022/02/05 20:16:02 by iderighe         ###   ########.fr       */
+/*   Updated: 2022/02/07 13:46:21 by iderighe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ void	prec_wait(unsigned long delay, t_dat *dat)
 	unsigned long	final;
 
 	final = gettime(read_val(&dat->data_m, &dat->tm_zero)) + delay;
-	while (gettime(read_val(&dat->data_m, &dat->tm_zero)) < final)
+	while (read_val(&dat->data_m, &dat->sig) != SIG_END
+		&& gettime(read_val(&dat->data_m, &dat->tm_zero)) < final)
 		usleep(1000);
 	return ;
 }

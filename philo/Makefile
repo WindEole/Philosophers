@@ -6,7 +6,7 @@
 #    By: iderighe <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/27 10:55:19 by iderighe          #+#    #+#              #
-#    Updated: 2022/02/04 13:57:55 by iderighe         ###   ########.fr        #
+#    Updated: 2022/02/07 15:00:43 by iderighe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,12 +15,12 @@ NAME	=	philo
 CC		=	clang
 CFLAGS	=	-Wall -Wextra -Werror -pthread
 CFA		=	-fsanitize=address -g3
-CFT		=	-fsanitize=thread -g3
+CFT		=	-fsanitize=thread -g
 
 RM		=	/usr/bin/rm -rf
 
 SRC		=	main_philo.c \
-			philo_thread.c \
+			big_man.c \
 			init.c \
 			time.c \
 			print.c \
@@ -34,7 +34,7 @@ all		:	$(NAME)
 $(NAME)	:	$(OBJ)
 			$(CC) $(CFLAGS) -o $(NAME) $(SRC)
 
-%.o		:	%.c
+%.o		:	%.c philo.h
 			$(CC) -o $@ -c $< $(CFLAGS)
 
 norm	:
